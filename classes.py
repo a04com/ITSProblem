@@ -13,10 +13,10 @@ COEFFS = Enum('COEFFS', {"Normal": 1.2, "SlightDamage": 0.95, "HalfDamage": 0.55
 
 class Player:
     def __init__(self, MAX_LOAD):
-        self.MAX_LOAD = MAX_LOAD  
-        self.speed = random.randint(1, 5) 
-        self.balance = random.randint(100, 1000)
-        self.products = []
+        self.MAX_LOAD = float(MAX_LOAD.split()[0])
+    speed = random.randint(1, 5) 
+    balance = random.randint(100, 1000)
+    products = []
 
 '''Товары'''
 
@@ -38,3 +38,8 @@ class Events(Enum):
     ROBBER = 6
     TAVERN = 7
     RANDOM_SPOIL = 8
+
+'''Город'''
+
+class City():
+    distance = random.randint(50, 150)
