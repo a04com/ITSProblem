@@ -5,7 +5,6 @@
 import random
 from enum import Enum
 
-ITEM_LIST = ['мясо', 'сухофрукты', 'зерно', 'мука', 'ткани', 'краска']
 COEFFS = Enum('COEFFS', {"Normal": 1.2, "SlightDamage": 0.95, "HalfDamage": 0.55, "AlmostAllDamage":0.25, 
                          "Trash": 0.1})
 
@@ -13,18 +12,18 @@ COEFFS = Enum('COEFFS', {"Normal": 1.2, "SlightDamage": 0.95, "HalfDamage": 0.55
 
 class Player:
     def __init__(self, MAX_LOAD):
-        self.MAX_LOAD = float(MAX_LOAD.split()[0])
-    speed = random.randint(1, 5) 
+        self.MAX_LOAD = int(MAX_LOAD.split()[0])
+    speed = random.randint(3, 5) 
     balance = random.randint(100, 1000)
     products = []
 
 '''Товары'''
 
 class Item:
-    def __init__(self, price):
-        self.price = price
-    item = random.choice(ITEM_LIST)
-    quality = COEFFS.Normal
+    def __init__(self, item):
+        self.item = item
+    price = None
+    quality = COEFFS.Normal.value
 
 '''События'''
 
@@ -41,5 +40,5 @@ class Events(Enum):
 
 '''Город'''
 
-class City():
+class City:
     distance = random.randint(50, 150)
