@@ -11,8 +11,9 @@ COEFFS = Enum('COEFFS', {"Normal": 1.2, "SlightDamage": 0.95, "HalfDamage": 0.55
 '''Игрок'''
 
 class Player:
-    def __init__(self, MAX_LOAD):
+    def __init__(self, MAX_LOAD, MAX_SPEED):
         self.MAX_LOAD = int(MAX_LOAD.split()[0])
+        self.MAX_SPEED = int(MAX_SPEED)
     speed = random.randint(3, 5) 
     balance = random.randint(100, 1000)
     products = []
