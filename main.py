@@ -1,4 +1,5 @@
 from classes import Player, Item, Events, City, COEFFS
+from db import insertItem, getItems, updateItem, deleteItems, makeItems
 import random
 
 ITEM_LIST = ['мясо', 'сухофрукты', 'зерно', 'мука', 'ткани', 'краска']
@@ -20,7 +21,8 @@ while True:
     randomItem.price = prices.get(randomItem.item)
 
     while player.balance - randomItem.price > 0 and player.MAX_LOAD > 0:
-        player.products.append(randomItem)
+
+        insertItem(randomItem)
         player.balance -= randomItem.price
         profit -= randomItem.price
         player.MAX_LOAD -= 1
@@ -33,6 +35,27 @@ while True:
     
     print("\nБаланс: {}".format(player.balance))
     print("Места осталось: {}".format(player.MAX_LOAD))
+
+    print("Хотите изменить информацию о товаре?")
+    isChange = input("Да(1) Нет(0): ")
+
+    if isChange == "0":
+            isChange = False
+
+    while isChange:
+        getItems()
+
+        itemToChange = int(input("Выберите цифру какой товар изменить: "))
+        newPrice = int(input("Новая цена: "))
+        newQuality = float(input("Новое качество: "))
+        
+        updateItem(newPrice, newQuality, id=itemToChange)
+        isChange = input("Товар изменен. Изменить ещё? (1, 0): ")
+        if isChange == "0":
+            isChange = False
+
+    for i in makeItems():
+        player.products.append(i)
 
     while nextCity.distance - player.speed > 0:
         if len(player.products) == 0:
@@ -150,7 +173,7 @@ while True:
         elif event == "TAVERN":
             print("\n День {}".format(day_count))
             print("Вы встретили таверну. Остановиться?")
-            isStop = bool(int(input("Введите 1 если хотите остановиться и 0 если продолжить путь.")))
+            isStop = bool(int(input("Введите 1 если хотите остановиться и 0 если продолжить путь. ")))
             
             if isStop == True:
                 if player.balance > 50:
@@ -199,7 +222,6 @@ while True:
             print("Осталось пройти: {} лиг.".format(nextCity.distance))
     
     if not isEmpty:
-        day_count += 1
         print("\n День {}".format(day_count))
         print("Доехали.")
 
@@ -209,4 +231,5 @@ while True:
         
         print("Профит: {}".format(profit))
 
+    deleteItems()
     break
