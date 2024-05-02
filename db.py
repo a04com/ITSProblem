@@ -44,14 +44,17 @@ def makeItems():
         newItem = Item(name)
         newItem.price = price
         newItem.quality = quality
-    
-    items.append(newItem)
-    return(items)
+        items.append(newItem)
+
+    return items
 
 def deleteItems():
     cursor.execute("DELETE FROM ItemsInfo")
     cursor.execute("ALTER TABLE ItemsInfo AUTO_INCREMENT = 1")
     db.commit()
+
+def deleteItem(id):
+    cursor.execute("DELETE FROM ItemsInfo WHERE itemID = '%s'" % id)
 
 def updateItem(new_price, new_quality, id):
     cursor.execute("UPDATE ItemsInfo SET price = %s, quality = %s WHERE itemID = %s", (new_price, new_quality, id))

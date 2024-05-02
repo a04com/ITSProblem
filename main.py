@@ -1,6 +1,6 @@
 from classes import Player, Item, Events, City, COEFFS
-from db import insertItem, getItems, updateItem, deleteItems, makeItems
-import random
+from db import insertItem, getItems, updateItem, deleteItems, deleteItem, makeItems
+import random, math
 
 ITEM_LIST = ['мясо', 'сухофрукты', 'зерно', 'мука', 'ткани', 'краска']
 day_count = 1
@@ -36,7 +36,7 @@ while True:
     print("\nБаланс: {}".format(player.balance))
     print("Места осталось: {}".format(player.MAX_LOAD))
 
-    print("Хотите изменить информацию о товаре?")
+    print("Хотите изменить/добавить/удалить информацию о товаре?")
     isChange = input("Да(1) Нет(0): ")
 
     if isChange == "0":
@@ -45,12 +45,34 @@ while True:
     while isChange:
         getItems()
 
-        itemToChange = int(input("Выберите цифру какой товар изменить: "))
-        newPrice = int(input("Новая цена: "))
-        newQuality = float(input("Новое качество: "))
-        
-        updateItem(newPrice, newQuality, id=itemToChange)
-        isChange = input("Товар изменен. Изменить ещё? (1, 0): ")
+        print("Изменить(0) / Добавить(1) / Удалить(2)")
+        theChange = int(input())
+
+        if theChange == 0:
+
+            itemToChange = int(input("Выберите цифру какой товар изменить: "))
+            newPrice = int(input("Новая цена: "))
+            newQuality = float(input("Новое качество: "))
+            
+            updateItem(newPrice, newQuality, id=itemToChange)
+
+        if theChange == 1:
+            itemToAdd = input("Какой товар добавить: ")
+            newPrice = int(input("Цена: "))
+            newQuality = float(input("Качество: "))
+
+            newItem = Item(itemToAdd)
+            newItem.price = newPrice
+            newItem.quality = newQuality
+
+            insertItem(newItem)
+
+        if theChange == 2:
+            itemToDelete = input("Какой товар удалить(Введите ID): ")
+            deleteItem(itemToDelete)
+
+        isChange = input("Готово. Изменить ещё? (1, 0): ")
+
         if isChange == "0":
             isChange = False
 
@@ -163,7 +185,7 @@ while True:
             else:
                 highestQuality = max([i.quality for i in player.products])
                 highestQualityProducts = [i for i in player.products if i.quality == highestQuality]
-                rnProducts = random.randint(1, len(highestQualityProducts))
+                rnProducts = random.randint(1, math.ceil(len(highestQualityProducts) / 2))
 
                 for i in range(rnProducts):
                     player.products.remove(highestQualityProducts[i])
